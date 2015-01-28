@@ -1,0 +1,18 @@
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+version = '1.0'
+mainClassName = 'server.Main'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.eclipse.jetty:jetty-server:9.2.0.RC0'
+    compile 'org.eclipse.jetty:jetty-servlet:9.2.0.RC0'
+}
