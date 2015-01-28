@@ -1,12 +1,12 @@
 apply plugin: 'java'
-apply plugin: 'application'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
+apply plugin: 'jetty'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 version = '1.0'
-mainClassName = 'server.Main'
+//mainClassName = 'server.Main'
 
 repositories {
     mavenCentral()
