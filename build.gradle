@@ -1,7 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
-apply plugin: 'jetty'
+apply plugin: 'war'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
@@ -13,8 +13,9 @@ repositories {
 }
 
 dependencies {
-    compile 'org.eclipse.jetty:jetty-server:9.2.0.RC0'
-    compile 'org.eclipse.jetty:jetty-servlet:9.2.0.RC0'
+//    compile 'org.eclipse.jetty:jetty-server:9.2.0.RC0'
+//    compile 'org.eclipse.jetty:jetty-servlet:9.2.0.RC0'
+    providedCompile group: 'javax', name: 'javaee-api', version: '7.0'
 }
 
 task wrapper(type: Wrapper) {

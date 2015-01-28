@@ -16,10 +16,36 @@
     <!--Hier werden die servlets auf bestimmte urls gebunden-->
     <servlet-mapping>
         <servlet-name>Redirector</servlet-name>
-        <url-pattern>primes</url-pattern>
+        <url-pattern>/primes</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Servlet</servlet-name>
-        <url-pattern>primes/searcher</url-pattern>
+        <url-pattern>/primes/searcher</url-pattern>
     </servlet-mapping>
+
+    <!-- Here we define the Java EE Security Rules-->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>primes</web-resource-name>
+            <!--Include all urls that are starting with /primes/ -->
+            <url-pattern>/primes/*</url-pattern>
+            <!-- This would result in a security leak because there are more http-methods than get and post-->
+            <!-- by defining no http-method at all, everything will be blocked-->
+            <!--http-method>GET</http-method>
+            <http-method>POST</http-method-->
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>view_role</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <login-config>
+        <auth-method>BASIC</auth-method>
+        <realm-name>Java EE Login</realm-name>
+    </login-config>
+
+    <security-role>
+        <description>This role is allowed to view the prime searcher</description>
+        <role-name>view_role</role-name>
+    </security-role>
 </web-app>
