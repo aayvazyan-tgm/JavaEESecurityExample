@@ -6,15 +6,12 @@ apply plugin: 'war'
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 version = '1.0'
-//mainClassName = 'server.Main'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-//    compile 'org.eclipse.jetty:jetty-server:9.2.0.RC0'
-//    compile 'org.eclipse.jetty:jetty-servlet:9.2.0.RC0'
     providedCompile group: 'javax', name: 'javaee-api', version: '7.0'
 }
 
