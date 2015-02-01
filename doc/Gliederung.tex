@@ -1,4 +1,3 @@
-%
 \documentclass[12pt,a4paper,draft]{report}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
@@ -8,6 +7,16 @@
 \usepackage{amssymb}
 \usepackage{lmodern}
 \usepackage{authoraftertitle}
+\usepackage[final]{graphicx}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\usepackage{color}
+\usepackage{hyperref}
+
+%Header & Footer
+%\usepackage{lastpage}
+%\rfoot{\thepage\ of \pageref{LastPage}}
+
+
 
 \date{29.09.2014}
 \author{Ari Ayvazyan}
@@ -16,69 +25,136 @@
 
 \begin{document}
 
-%%\maketitle
-\chapter*{\MyTitle}
-\begin{flushright}
-        \MyAuthor, \MyDate.
-\end{flushright}
+\maketitle
+\chapter{\MyTitle}
+%\begin{flushright}
+%        \MyAuthor, \MyDate
+%\end{flushright}
 
 
 \section{Introduction to Security Architecture}
-Authorisation and Authenthification \\
-Principal\\
-Credential
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\linewidth]{res/SecurityLayers}
+\caption{Security Layers in a common JEE application}
+\label{fig:SecurityLayers}
+\end{figure}
 
-\section{Authentification}
-User authentication mechanism definition
+
+\section{Authentication}
+Authentication\\
+Who are you?\\
+Identification\\
 
 \section{Authorization}
+Authorization\\
+What are you allowed to do?\\
+Assignment of Permissions to a Authenticated User\\
 
-Authorization mechanisms\\
-Security Constraints
 
 \section{Deployment Descriptors}
-Definition
-Authentification via Deployment Descriptors
+Describes how the Application should be Deployed.\\
+Defines Security Constraints\\
+\begin{itemize}
+	\item Protected Information
+	\item Probably SSL
+	\item Specify which user may access them
+\end{itemize}
+Deployment Descriptors are XML-Files\\
+Usually located in /WEB-INF/\\
+\begin{itemize}
+	\item web.xml
+	\item Vendor-specific.xml (E.g. Glassfish: glassfish-web.xml)
+\end{itemize}
+
+\subsection*{web.xml}
+Protected Resources\\
+Security Roles\\
+Authentication methods\\
+
+\subsection*{(vendor-specific).xml}
+User – Role mapping\\
+Group – Role mapping\\
+\\
+Vendor specific settings\\
+
+\section{Principals}
+A Principal is a identity that can be authenticated.\\
+E.g. a Unique user name\\
+
+\section{Credential}
+A Credential is defined as information that is used to authenticate a Principal.\\
+E.g. a Password\\
+
+\section{Groups}
+Groups and Principals can be mapped to Roles.\\
+Groups are defined in vendor-specific.xml\\
+
+\section{Roles}
+Permissions are granted to Roles.\\
+Roles are defined in the web.xml file\\
 
 \section{Realms}
-
 aka Security policy domain\\
-Definition\\
-Implementation
+Provides information about principals, their Groups and their credentials\\
+May be a Database, File structure, connection…\\\\
+In other words:\\
+It contains user information\\
+E.g. Username, Password \& Permissions\\
 
-\section{Users, groups and roles}
-What is a User.\\
-What is a Group.\\
-What is a Role.\\
-
-Implementation\\
-The role of the Application-Server
-
+\newpage
 \section{Implementation sample}
-Short summary to a implemented sample.
+\href{https://github.com/aayvazyan-tgm/JavaEESecurityExample}{https://github.com/aayvazyan-tgm/JavaEESecurityExample}\\
+\begin{figure}[h!]
+\centering
+\includegraphics[width=1\linewidth]{res/Unauthorized}
+\caption{The user tries to access a resource without authentication}
+\label{fig:Unauthorized}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\linewidth]{res/Authorized}
+	\caption{The user sends authentication data with his request}
+	\label{fig:Authorized}
+\end{figure}
 
 \section{Frameworks}
-You do not have to stick with Java Enterprise Beans!
-
-\subsection{Spring}
-Advantages/Disadvantages\\
-Implementation
+You do not have to stick with Java Enterprise Beans!\\
 
 \subsection{Shiro}
+Offers: Authentication, Authorization, Cryptography\\
+Simple to use\\\\
 Advantages/Disadvantages\\
-Implementation
+Implementation Sample
+
+\subsection{Spring}
+Offers: Authentication, Authorization, Cryptography\\
+Very structured\\\\
+Advantages/Disadvantages\\
 
 \subsection{JAAS - Java Authentication and Authorization Service}
+Offers: Authentication, Authorization, Cryptography\\
+Included in Java SE since Java 1.4 (javax.security.auth)\\\\
 Advantages/Disadvantages\\
-Implementation
 
 \section{Output escaping}
-Why should I use this?\\
-Cross Site Scripting\\
-SQL Injections
-\subsection{CSL - Framework}
-Usage sample
-\section*{Quellen}
+Escape user input to prevent injections.\\
+\\
+Escape the output to add a extra layer of security.\\
+Use a Framework to do so!\\
+
+\section{Whats to come in Part 2 (Adrian)}
+\begin{itemize}
+	\item Working with Digital Certificates\\
+	\item Securing Application Clients\\
+	\item Security with Enterprise Beans\\
+	\item Further Framework Information\\
+\end{itemize}
+
+
+\newpage
+\section*{Sources}
 JavaOne 2014: The Anatomy of a Secure Web Application Using Java, \\
 Shawn McKinney \& John Field, September 29, 2014\\
 San Francisco\\\\
