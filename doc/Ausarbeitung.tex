@@ -1,4 +1,4 @@
-\documentclass[12pt,a4paper,draft]{report}
+\documentclass[12pt,a4paper]{report}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage[T1]{fontenc}
@@ -11,6 +11,12 @@
 \DeclareGraphicsExtensions{.pdf,.png,.jpg}
 \usepackage{color}
 \usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=black,
+	urlcolor=red,
+	linktoc=all
+}
 
 %Header & Footer
 %\usepackage{lastpage}
@@ -26,6 +32,9 @@
 \begin{document}
 
 \maketitle
+\tableofcontents
+
+
 \chapter{\MyTitle}
 %\begin{flushright}
 %        \MyAuthor, \MyDate
