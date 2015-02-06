@@ -43,32 +43,37 @@
 
 \section{Introduction to Security Architecture}
 Most web applications have a few things in common:\\
-They need to figure out who is the user that is using the application and what is he allowed to do and see.\\
-According to Oracle, there are two ways to implement such functionality.\cite{oracleDoc}//
-\begin{enumerate}
-	\item Programmatic
-	\item Declarative (this includes Annotations and XML-Files)
-\end{enumerate}
-
-
+They need to figure out who is the user that is using the application and what is he allowed to do and see.\\\\
+A typical application has more than one security layer, it may be protected by only being available from a specified network or VPN. In addition there usually is some kind of identity determination followed by a SQL user with permission to query only the required functions and data sets.\\
+On top of this, there should be output escaping to ensure that a attacker, who is able to manipulate the output for users, is limited in the harm he is able to cause.
 \begin{figure}[h]
 \centering
 \includegraphics[width=1\linewidth]{res/SecurityLayers}
 \caption{Security Layers in a common JEE application}
 \label{fig:SecurityLayers}
+
 \end{figure}
+\\According to Oracle\cite{oracleDoc}, there are two ways to implement such access control functionality with Java EE:
+\begin{enumerate}
+	\item Programmatic
+	\item Declarative (this includes Annotations and XML-Files)
+\end{enumerate}
+While the programmatic implementation offers a wider range of customization, the declarative provides a well structured and easy to use approach.\\
 
 
 \section{Authentication}
-Authentication\\
-Who are you?\\
-Identification\\
+Authentication describes the identification process. This is mostly done by asking for a user-name \& password or sending a Token/Hash.
 
 \section{Authorization}
-Authorization\\
-What are you allowed to do?\\
-Assignment of Permissions to a Authenticated User\\
+Authorization is what happens after you are authenticated.\\
+It deals with the question of what a authenticated person is allowed to do.\\
 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\linewidth]{res/AuthenAuthor}
+	\caption{Authentication \& Authorization}
+	\label{fig:AuthenAuthor}
+\end{figure}
 
 \section{Deployment Descriptors}
 Describes how the Application should be Deployed.\\
