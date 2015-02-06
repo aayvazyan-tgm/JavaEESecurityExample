@@ -6,6 +6,7 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{lmodern}
+\usepackage[none]{hyphenat}
 \usepackage{authoraftertitle}
 \usepackage[final]{graphicx}
 \DeclareGraphicsExtensions{.pdf,.png,.jpg}
@@ -67,6 +68,7 @@ Authentication describes the identification process. This is mostly done by aski
 \section{Authorization}
 Authorization is what happens after you are authenticated.\\
 It deals with the question of what a authenticated person is allowed to do.\\
+Authorization may be applied to URLs or resources like Beans and Servlets.\\
 
 \begin{figure}[h]
 	\centering
@@ -76,18 +78,13 @@ It deals with the question of what a authenticated person is allowed to do.\\
 \end{figure}
 
 \section{Deployment Descriptors}
-Describes how the Application should be Deployed.\\
-Defines Security Constraints\\
-\begin{itemize}
-	\item Protected Information
-	\item Probably SSL
-	\item Specify which user may access them
-\end{itemize}
-Deployment Descriptors are XML-Files\\
-Usually located in /WEB-INF/\\
+A Deployment Descriptor describes how a Java EE application should be deployed.\\
+They contain information about security constraints, accessibility and resource references.\\\\
+Deployment Descriptors are XML-Files that are by default located in the /WEB-INF/ directory.\\
+The following deployment descriptors may be found there:
 \begin{itemize}
 	\item web.xml
-	\item Vendor-specific.xml (E.g. Glassfish: glassfish-web.xml)
+	\item <vendor-specific>.xml (E.g. when using Glassfish: glassfish-web.xml)
 \end{itemize}
 
 \subsection*{web.xml}
