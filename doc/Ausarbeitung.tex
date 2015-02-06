@@ -15,6 +15,7 @@
 	colorlinks=true,
 	linkcolor=black,
 	urlcolor=red,
+	citecolor=black,
 	linktoc=all
 }
 
@@ -27,7 +28,6 @@
 \date{29.09.2014}
 \author{Ari Ayvazyan}
 \title{JEE Security Structure Part 1}
-
 
 \begin{document}
 
@@ -42,6 +42,15 @@
 
 
 \section{Introduction to Security Architecture}
+Most web applications have a few things in common:\\
+They need to figure out who is the user that is using the application and what is he allowed to do and see.\\
+According to Oracle, there are two ways to implement such functionality.\cite{oracleDoc}//
+\begin{enumerate}
+	\item Programmatic
+	\item Declarative (this includes Annotations and XML-Files)
+\end{enumerate}
+
+
 \begin{figure}[h]
 \centering
 \includegraphics[width=1\linewidth]{res/SecurityLayers}
@@ -161,29 +170,30 @@ Use a Framework to do so!\\
 
 
 \newpage
-\section*{Sources}
-JavaOne 2014: The Anatomy of a Secure Web Application Using Java, \\
+\begin{thebibliography}{99}
+\bibitem{JavaOne}JavaOne 2014: The Anatomy of a Secure Web Application Using Java, \\
 Shawn McKinney \& John Field, September 29, 2014\\
-San Francisco\\\\
-Java Security: Sicherheitslücken identifizieren und vermeiden, \\
+San Francisco
+\bibitem{jSecVvulnerabilities}Java Security: Sicherheitslücken identifizieren und vermeiden, \\
 Marc Schönefeld, 1. edition 2011\\
 Publisher: Hüthig Jehle Rehm GmbH, Heidelberg. \\
-ISBN/ISSN 978-3-8266-9105-8\\\\
-Enterprise Java Security: Building Secure J2EE Applications,\\
+ISBN/ISSN 978-3-8266-9105-8
+\bibitem{EJSec}Enterprise Java Security: Building Secure J2EE Applications,\\
 Marco Pistoia, Nataraj Nagaratnam, Larry Koved, Anthony Nadalin,\\
 1. edition 2004 \\
 Publisher: Addison-Wesley Professional.\\
-ISBN/ISSN: ISBN 0-321-11889-8\\\\
-Official JavaEE Documentation, Oracle,\\
+ISBN/ISSN: ISBN 0-321-11889-8
+\bibitem{oracleDoc}Official JavaEE Documentation, Oracle,\\
 29.09.2014
-http://docs.oracle.com/javaee/7/tutorial/doc/security-intro.htm\\\\
+http://docs.oracle.com/javaee/7/tutorial/partsecurity.htm\#GIJRP
 Java EE 6,\\
 Dirk Weil, 1. edition 2012\\
 Publisher: entwickler.press\\
-ISBN 978-3-86802-077-9\\\\
-Java EE 6 Cookbook for Securing, Tuning, and Extending Enterprise Applications,\\
+ISBN 978-3-86802-077-9
+\bibitem{jeecookbook}Java EE 6 Cookbook for Securing, Tuning, and Extending Enterprise Applications,\\
 Mick Knutson,\\
 1. edition June 2012 \\
 Publisher: Addison-Wesley Professional.\\
-ISBN/ISSN: ISBN 9781849683166\\\\
+ISBN/ISSN: ISBN 9781849683166
+\end{thebibliography}
 \end{document}
