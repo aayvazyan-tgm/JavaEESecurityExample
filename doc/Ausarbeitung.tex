@@ -12,6 +12,8 @@
 \DeclareGraphicsExtensions{.pdf,.png,.jpg}
 \usepackage{color}
 \usepackage{hyperref}
+\usepackage[tikz]{bclogo}
+
 \hypersetup{
 	colorlinks=true,
 	linkcolor=black,
@@ -19,6 +21,34 @@
 	citecolor=black,
 	linktoc=all
 }
+
+\usepackage{listings}
+\definecolor{forestgreen}{RGB}{34,139,34}
+\definecolor{orangered}{RGB}{239,134,64}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+
+\lstdefinestyle{XML} {
+	language=XML,
+	extendedchars=true, 
+	breaklines=true,
+	breakatwhitespace=true,
+	emph={},
+	emphstyle=\color{red},
+	basicstyle=\ttfamily,
+	columns=fullflexible,
+	commentstyle=\color{gray}\upshape,
+	morestring=[b]",
+	morecomment=[s]{<?}{?>},
+	morecomment=[s][\color{forestgreen}]{<!--}{-->},
+	keywordstyle=\color{orangered},
+	stringstyle=\ttfamily\color{black}\normalfont,
+	tagstyle=\color{darkblue}\bf,
+	morekeywords={attribute,xmlns,version,type,release},
+	otherkeywords={attribute=, xmlns=},
+	basicstyle=\small
+}
+
 
 %Header & Footer
 %\usepackage{lastpage}
@@ -81,22 +111,81 @@ Authorization may be applied to URLs or resources like Beans and Servlets.\\
 A Deployment Descriptor describes how a Java EE application should be deployed.\\
 They contain information about security constraints, accessibility and resource references.\\\\
 Deployment Descriptors are XML-Files that are by default located in the /WEB-INF/ directory.\\
-The following deployment descriptors may be found there:
+The following deployment descriptors may be found here:
 \begin{itemize}
 	\item web.xml
 	\item <vendor-specific>.xml (E.g. when using Glassfish: glassfish-web.xml)
 \end{itemize}
 
-\subsection*{web.xml}
-Protected Resources\\
-Security Roles\\
-Authentication methods\\
+\subsection{web.xml}
+The Web.xml file stores apart from usual deployment information like servlet mappings also security related information about:\\
+\begin{itemize}
+	\item Protected Resources
+	\item Security Roles
+	\item Authentication methods
+\end{itemize}
+The following XML snippets are located within the <web-app></web-app> tag.
+\newpage
+\subsubsection*{Protected Resources}
+It is possible to limit access to resources by defining a security constraint on the URL or by securing the resource itself.\\
+E.g. to protect the /primes/ URL with all its subdirectories we would have to use the following code:\\
+\begin{bclogo}[couleur=yellow!15,arrondi=0.1,logo=\bccrayon, ombre = true]{Securing a URL}
+\begin{lstlisting}[style=XML]
+<security-constraint>
+	<web-resource-collection>
+		<web-resource-name>primes
+		</web-resource-name>
+<!--Include /primes/ including all following subfolders-->
+		<url-pattern>/primes/*</url-pattern>
+<!-- This would result in a security leak because 
+	there are more http-methods than GET and POST-->
+<!-- by defining no http-method at all, 
+	everything will be blocked-->
+		<http-method>GET</http-method>
+		<http-method>POST</http-method>
+	</web-resource-collection>
+	
+	<auth-constraint>
+		<role-name>view_role</role-name>
+	</auth-constraint>
+</security-constraint>
+\end{lstlisting}
+\end{bclogo}
+In result, only a user with the role view\_role is allowed to access the defined resources.
+\newpage
+\subsubsection*{Security Roles}
+A Security Role was used in the last subsection "Protected Resources", we declared that only users with a view\_role are allowed to view the restricted URL.\\
+A Security Role is a abstract layer in front of the container, it defines a identifier which we can use for constraints. This identifier is then used by the container to specify its meaning by telling who is part of this Security Role.\\
+\begin{bclogo}[couleur=yellow!15,arrondi=0.1,logo=\bccrayon, ombre = true]{Defining a Security Role}
+\begin{lstlisting}[style=XML]
+    <security-role>
+	    <description>This role has view access</description>
+	    <role-name>view_role</role-name>
+    </security-role>
+\end{lstlisting}
+\end{bclogo}
+\subsubsection*{Authentication Methods}
+There are several kinds of Authentication Methods with different security behaviors.\\
+BASIC Authentication opens a login prompt when a user tries to access the secured URL, it is simple to implement but insecure. BASIC Authentication sends the user's credentials unencrypted to the server.\\
+\begin{bclogo}[couleur=yellow!15,arrondi=0.1,logo=\bccrayon, ombre = true]{Defining BASIC Authentication}
+\begin{lstlisting}[style=XML]
+    <login-config>
+	    <auth-method>BASIC</auth-method>
+	    <realm-name>Java EE Login</realm-name>
+    </login-config>
+\end{lstlisting}
+\end{bclogo}
+\newpage
+\subsection{(vendor-specific).xml}
+Most containers use in addition to the web.xml a vendor specific XML file that is usually located in the same directory with web.xml.\\
+E.g. Glassfish calls this file "glassfish-web.xml" while Tomcat has named it "context.xml".\\\\
+The following settings can be configured there:\\
+\begin{itemize}
+	\item User – Role mapping
+	\item Group – Role mapping
+	\item Other container specific configuration.
+\end{itemize}
 
-\subsection*{(vendor-specific).xml}
-User – Role mapping\\
-Group – Role mapping\\
-\\
-Vendor specific settings\\
 
 \section{Principals}
 A Principal is a identity that can be authenticated.\\
@@ -108,7 +197,7 @@ E.g. a Password\\
 
 \section{Groups}
 Groups and Principals can be mapped to Roles.\\
-Groups are defined in vendor-specific.xml\\
+Groups are defined in the vendor-specific.xml\\
 
 \section{Roles}
 Permissions are granted to Roles.\\
