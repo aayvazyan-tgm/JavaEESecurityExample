@@ -41,7 +41,7 @@
 
     <login-config>
         <auth-method>BASIC</auth-method>
-        <realm-name>Java EE Login</realm-name>
+        <realm-name>file</realm-name>
     </login-config>
 
     <security-role>
