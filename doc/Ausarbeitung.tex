@@ -154,7 +154,7 @@ E.g. to protect the /primes/ URL with all its subdirectories we would have to us
 In result, only a user with the role view\_role is allowed to access the defined resources.
 \newpage
 \subsubsection*{Security Roles}
-A Security Role was used in the last subsection "Protected Resources", we declared that only users with a view\_role are allowed to view the restricted URL.\\
+A Security Role was used in the last subsection "Protected Resources", we declared that only users with the role "view\_role" are allowed to view the restricted URL.\\
 A Security Role is a abstract layer in front of the container, it defines a identifier which we can use for constraints. This identifier is then used by the container to specify its meaning by telling who is part of this Security Role.\\
 \begin{bclogo}[couleur=yellow!15,arrondi=0.1,logo=\bccrayon, ombre = true]{Defining a Security Role}
 \begin{lstlisting}[style=XML]
@@ -181,38 +181,64 @@ Most containers use in addition to the web.xml a vendor specific XML file that i
 E.g. Glassfish calls this file "glassfish-web.xml" while Tomcat has named it "context.xml".\\\\
 The following settings can be configured there:\\
 \begin{itemize}
-	\item User – Role mapping
-	\item Group – Role mapping
+	\item Principal – Role Mapping
+	\item Group – Role Mapping
 	\item Other container specific configuration.
 \end{itemize}
 
-
+\subsubsection{User Role Mapping}
+It is possible to Map Users (Principals) to Roles. This setting is container dependent.\\
+\begin{bclogo}[couleur=yellow!15,arrondi=0.1,logo=\bccrayon, ombre = true]{Principal mapping with Glassfish}
+	\begin{lstlisting}[style=XML]
+	<glassfish-web-app>
+	<security-role-mapping>
+		<role-name>view_role</role-name>
+		<principal-name>Blitzmann</principal-name>
+	</security-role-mapping>
+	</glassfish-web-app>
+	\end{lstlisting}
+\end{bclogo}
+This setting maps the user "Blitzmann" to the role "view\_role".
+\newpage
+\subsubsection{Group Role Mapping}
+It is possible to Map Users (Principals) to Roles. This setting is container dependent.\\
+\begin{bclogo}[couleur=yellow!15,arrondi=0.1,logo=\bccrayon, ombre = true]{Principal mapping with Glassfish}
+	\begin{lstlisting}[style=XML]
+	<glassfish-web-app>
+	<security-role-mapping>
+	<role-name>view_role</role-name>
+	<group-name>view_group</group-name>
+	</security-role-mapping>
+	</glassfish-web-app>
+	\end{lstlisting}
+\end{bclogo}
+This setting maps the group "view\_group" to the role "view\_role".
 \section{Principals}
 A Principal is a identity that can be authenticated.\\
 E.g. a Unique user name\\
+Principals are handled by the container and need to be configured there. This includes storage and queries\\
 
 \section{Credential}
 A Credential is defined as information that is used to authenticate a Principal.\\
 E.g. a Password\\
+Credentials are just like Principals handled by the container.
 
 \section{Groups}
-Groups and Principals can be mapped to Roles.\\
-Groups are defined in the vendor-specific.xml\\
+Groups and Principals can be mapped together. This information is handled by the container and by that not accessible by the application. To make this information available to the server, Groups can be mapped to Roles.\\
+Group-Role mappings are usually defined in the (vendor-specific).xml file.\\
 
 \section{Roles}
-Permissions are granted to Roles.\\
-Roles are defined in the web.xml file\\
+A Role is a abstract layer in front of the container that can be accessed application wide, they are declared in the web.xml file\\
+Roles can be mapped to Principals and Groups via the (vendor-specific).xml file.\\
 
 \section{Realms}
-aka Security policy domain\\
-Provides information about principals, their Groups and their credentials\\
-May be a Database, File structure, connection…\\\\
-In other words:\\
-It contains user information\\
-E.g. Username, Password \& Permissions\\
+Realms are also known as Security policy domains, they store and provide information about Principals, their Credentials and their Groups.\\
+A Realm may take use of a database, a file structure, a connection to a service...\\\\
+Realms are handled by the container, some come with pre-configured realms.
 
 \newpage
-\section{Implementation sample}
+\section{Implementation Sample}
+The following sample may be found at this URL:\\
 \href{https://github.com/aayvazyan-tgm/JavaEESecurityExample}{https://github.com/aayvazyan-tgm/JavaEESecurityExample}\\
 \begin{figure}[h!]
 \centering
@@ -228,28 +254,24 @@ E.g. Username, Password \& Permissions\\
 	\label{fig:Authorized}
 \end{figure}
 
+\section{Output Escaping}
+Security vulnerabilities happen to be found in the best applications, it is important to have more layers of security that prevent attackers from reading or modifying sensitive information.\\
+E.g. we have a guestbook, everybody is allowed to write a entry. To prevent a attacker from writing custom HTML into our site, we may use input escaping. But if the attacker has managed to someway access our database in a different way, where no input escaping is applied, he would be able to perform his attack on our users.\\
+To prevent him from doing so, we have to check our output (Output Escaping). This means that we only allow data to be passed that makes sense, so we do not allow HTML elements in this case.\\
+It is important to use a framework to do so, they are proven to work, tested and can even save working hours.
+
 \section{Frameworks}
 \subsection{Shiro}
 Offers: Authentication, Authorization, Cryptography\\
 Simple to use\\\\
-Advantages/Disadvantages\\
-Implementation Sample
 
 \subsection{Spring}
 Offers: Authentication, Authorization, Cryptography\\
 Very structured\\\\
-Advantages/Disadvantages\\
 
 \subsection{JAAS - Java Authentication and Authorization Service}
 Offers: Authentication, Authorization, Cryptography\\
 Included in Java SE since Java 1.4 (javax.security.auth)\\\\
-Advantages/Disadvantages\\
-
-\section{Output escaping}
-Escape user input to prevent injections.\\
-\\
-Escape the output to add a extra layer of security.\\
-Use a Framework to do so!\\
 
 \section{Whats to come in Part 2 (Adrian)}
 \begin{itemize}
@@ -262,9 +284,6 @@ Use a Framework to do so!\\
 
 \newpage
 \begin{thebibliography}{99}
-\bibitem{JavaOne}JavaOne 2014: The Anatomy of a Secure Web Application Using Java, \\
-Shawn McKinney \& John Field, September 29, 2014\\
-San Francisco
 \bibitem{jSecVvulnerabilities}Java Security: Sicherheitslücken identifizieren und vermeiden, \\
 Marc Schönefeld, 1. edition 2011\\
 Publisher: Hüthig Jehle Rehm GmbH, Heidelberg. \\
@@ -286,5 +305,8 @@ Mick Knutson,\\
 1. edition June 2012 \\
 Publisher: Addison-Wesley Professional.\\
 ISBN/ISSN: ISBN 9781849683166
+\bibitem{JavaOne}JavaOne 2014: The Anatomy of a Secure Web Application Using Java, \\
+Shawn McKinney \& John Field, September 29, 2014\\
+San Francisco
 \end{thebibliography}
 \end{document}
