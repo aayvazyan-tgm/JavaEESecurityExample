@@ -240,13 +240,16 @@ Realms are handled by the container, some come with pre-configured realms.
 \section{Implementation Sample}
 The following sample may be found at this URL:\\
 \href{https://github.com/aayvazyan-tgm/JavaEESecurityExample}{https://github.com/aayvazyan-tgm/JavaEESecurityExample}\\
+\subsection{Objective}
+The objective of our sample is to deny access to our service, that is reachable at .../primes/, to everybody except users that are granted permission by possessing the "view\_role" role.
 \begin{figure}[h!]
 \centering
 \includegraphics[width=1\linewidth]{res/Unauthorized}
 \caption{The user tries to access a resource without authentication}
 \label{fig:Unauthorized}
 \end{figure}
-
+\newpage
+To figure out which user possesses the "view\_role" role, we first have to authenticate the user. This shall happen with a login promt. After transmitting the credentials to the server and having the correct role, the user should be able to access the resource.
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=1\linewidth]{res/Authorized}
@@ -254,6 +257,51 @@ The following sample may be found at this URL:\\
 	\label{fig:Authorized}
 \end{figure}
 
+\subsection{setup}
+A Glassfish server is used as the container.\\
+The user "Blitzmann" was created by navigating to the GlassFish Server Administration Console, then to Configuration -> server-config -> Security -> Realms -> file -> add Property and entering "Blitzmann" as Name and the desired password as Value.\\
+The rest is configured in the web.xml and glassfish-web.xml
+\begin{bclogo}[couleur=yellow!15,arrondi=0.1,logo=\bccrayon, ombre = true]{web.xml}
+	\begin{lstlisting}[style=XML]
+    <security-constraint>
+    <web-resource-collection>
+	    <web-resource-name>primes</web-resource-name>
+	    <!--Include all urls that are starting with /primes/ -->
+	    <url-pattern>/primes/*</url-pattern>
+	    <!-- This would result in a security leak because 
+		    there are more http-methods than get and post-->
+	    <!-- by defining no http-method at all 
+		    everything will be blocked-->
+	    <!--http-method>GET</http-method>
+	    <http-method>POST</http-method-->
+    </web-resource-collection>
+	    <auth-constraint>
+		    <role-name>view_role</role-name>
+	    </auth-constraint>
+    </security-constraint>
+    
+    <login-config>
+	    <auth-method>BASIC</auth-method>
+	    <realm-name>file</realm-name>
+    </login-config>
+    
+    <security-role>
+        <description>This role has view access</description>
+        <role-name>view_role</role-name>
+    </security-role>
+	\end{lstlisting}
+\end{bclogo}
+\begin{bclogo}[couleur=yellow!15,arrondi=0.1,logo=\bccrayon, ombre = true]{glassfish-web.xml}
+	\begin{lstlisting}[style=XML]
+	<glassfish-web-app>
+	<security-role-mapping>
+	<role-name>view_role</role-name>
+	<group-name>view_group</group-name>
+	<principal-name>Blitzmann</principal-name>
+	</security-role-mapping>
+	</glassfish-web-app>
+	\end{lstlisting}
+\end{bclogo}
 \section{Output Escaping}
 Security vulnerabilities happen to be found in the best applications, it is important to have more layers of security that prevent attackers from reading or modifying sensitive information.\\
 E.g. we have a guestbook, everybody is allowed to write a entry. To prevent a attacker from writing custom HTML into our site, we may use input escaping. But if the attacker has managed to someway access our database in a different way, where no input escaping is applied, he would be able to perform his attack on our users.\\
