@@ -3,6 +3,7 @@ package shiro;
 import FinderStrategies.BigIntFinder;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
+import org.apache.shiro.config.IniSecurityManagerFactory;
 import org.apache.shiro.subject.Subject;
 import servlet.Finder;
 
@@ -71,11 +72,22 @@ public class ShiroServlet extends HttpServlet {
         }
         System.out.println( "User [" + currentUser.getPrincipal() + "] logged in successfully." );
 
+
         //This line is Important to generate a Valid HTML Form
         out.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \n" +
                 "  \"http://www.w3.org/TR/html4/loose.dtd\">");
         out.println("<html><head><title></title></head><body>");
         //this is where the fun part starts
+        //Login form
+        out.println("<h1>Login to Web App</h1>\n" +
+                "      <form method=\"post\">\n" +
+                "        <p><input type=\"text\" name=\"login\" value=\"\" placeholder=\"Username or Email\"></p>\n" +
+                "        <p><input type=\"password\" name=\"password\" value=\"\" placeholder=\"Password\"></p>\n" +
+                "        <p class=\"submit\"><input type=\"submit\" name=\"commit\" value=\"Login\"></p>\n" +
+                "      </form>"
+        );
+
+
         //The title
         out.println("<div align=\"center\"><h1>Prime Searcher: " + randomServerIdentifier + "</h1>");
         //The upper border
@@ -83,11 +95,17 @@ public class ShiroServlet extends HttpServlet {
         //The start date
         out.println("Started at " + this.startDate.toString() + "<br/>");
         //out.println("Found: "+this.finder.getCounter()+" Primes <br>");
-        out.println("Last prime discovered was " + this.finder.getLastPrime().toString() + " at " + new Date(System.currentTimeMillis()).toString() + " <br> ");
+        if ( currentUser.hasRole( "schwartz" ) ) {
+            out.println("May the Schwartz be with you!");
+        } else {
+            out.println( "Hello, mere mortal." );
+        }
+        out.println("Hello "+ currentUser.getPrincipal() +", the last prime discovered was " + this.finder.getLastPrime().toString() + " at " + new Date(System.currentTimeMillis()).toString() + " <br> ");
         //Another Border
         out.println("<hr style=\"color:blue; background-color:blue; height:15px; width:80%;\">");
         //Closing open Tags and the center div
         out.println("</div></body></html>");
+        currentUser.logout();
     }
 
     /**
@@ -97,6 +115,22 @@ public class ShiroServlet extends HttpServlet {
      * @see javax.servlet.http.HttpServlet
      */
     public void init() throws ServletException {
+        //
+        // Initializing Shiro
+        //
+
+        // 1.
+        IniSecurityManagerFactory factory = new IniSecurityManagerFactory("classpath:shiro.ini");
+
+        // 2.
+        org.apache.shiro.mgt.SecurityManager securityManager = factory.getInstance();
+
+        // 3.
+        SecurityUtils.setSecurityManager(securityManager);
+
+        //
+        // Done
+        //
         randomServerIdentifier = new Random().nextInt(20);
         this.startDate = new Date(System.currentTimeMillis());
         super.init();
