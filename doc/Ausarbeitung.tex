@@ -349,47 +349,6 @@ The rest is configured in the web.xml and glassfish-web.xml
 	\end{lstlisting}
 \end{bclogo}
 
-
-\chapter{Securing Application Clients}
-\section{General}
-In general, when developing a Java EE application client a lot of security concerns that you would have with any normal application occur here as well.\\
-
-This includes but is not limited to:
-\begin{itemize}
-\item Decompiling
-\item Malware
-\item Disassembling
-\end{itemize}
-This means you want to keep the amount of programmatic security management as low as possible and be careful with confidential data.\\\\
-
-The basic protection precautions of secure programming in Java are:
-
-\begin{itemize}
-\item Deliberate use of privileged code
-\item Appropriate definition of static fields
-\item Reduction of visibility
-\item Package safety
-\item Immutable objects
-\item Serialization
-\item Native methods
-\item Dealing carefully with confidential data in the heap
-\end{itemize}
-
-\section{Java EE Application Clients}
-When developing Java EE application clients you can avoid a lot of client security leaks by reducing the "thickness" of the client. Never forget that an attacker could potentially write his own application client! Therefore, Java EE authentication requirements for application clients are the same as for other Java EE components, and the same authentication techniques can be used as for other Java EE application components. This means it is not possible to write an application client to bypass a web-clients authentication requirement. Unprotected web resources can still be accessed without authentication.
-
-\section{Authentication}
-When accessing protected web resources, the usual varieties of authentication can be used: HTTP basic authentication (more details can be found in 1.4.1 Authentication), HTTP login-form authentication, or SSL client authentication.
-Authentication is required when accessing protected enterprise beans. The authentication mechanisms available for enterprise beans are discussed in the chapter “Security with Enterprise Beans”.
-
-\section{Login Modules}
-An application client can use the Java Authentication and Authorization Service (JAAS) to create login modules for authentication.
-To do this, write a class that implements the javax.security.auth.callback.CallbackHandler interface so that it can interact with users to enter specific authentication data, such as user names or passwords, or to display error and warning messages.
-“Applications implement the CallbackHandler interface and pass it to the login context, which forwards it directly to the underlying login modules. A login module uses the callback handler both to gather input, such as a password or smart card PIN, from users and to supply information, such as status information, to users. Because the application specifies the callback handler, an underlying login module can remain independent of the various ways applications interact with users.” [3, Java EE 6 Documentation, Using Login Modules]
-
-\section{Programmatic Login}
-Programmatic login enables the client code to supply user credentials. If you are using an EJB client, you can use the com.sun.appserv.security.ProgrammaticLogin class with its convenient login and logout methods. Programmatic login is specific to a server. If possible, login modules should be preferred. 
-
 \chapter{Security with Enterprise Beans}
 Enterprise Java Beans offers many different options to secure your application. Enterprise Java Beans can fully organize both Transactions and Authorization.
 
@@ -511,6 +470,48 @@ public void getTextUpd() {
 \end{bclogo}
 
 [6, Enterprise Java Beans, Page 335: EJB-Sicherheit]
+
+
+\chapter{Securing Application Clients}
+\section{General}
+In general, when developing a Java EE application client a lot of security concerns that you would have with any normal application occur here as well.\\
+
+This includes but is not limited to:
+\begin{itemize}
+\item Decompiling
+\item Malware
+\item Disassembling
+\end{itemize}
+This means you want to keep the amount of programmatic security management as low as possible and be careful with confidential data.\\\\
+
+The basic protection precautions of secure programming in Java are:
+
+\begin{itemize}
+\item Deliberate use of privileged code
+\item Appropriate definition of static fields
+\item Reduction of visibility
+\item Package safety
+\item Immutable objects
+\item Serialization
+\item Native methods
+\item Dealing carefully with confidential data in the heap
+\end{itemize}
+
+\section{Java EE Application Clients}
+When developing Java EE application clients you can avoid a lot of client security leaks by reducing the "thickness" of the client. Never forget that an attacker could potentially write his own application client! Therefore, Java EE authentication requirements for application clients are the same as for other Java EE components, and the same authentication techniques can be used as for other Java EE application components. This means it is not possible to write an application client to bypass a web-clients authentication requirement. Unprotected web resources can still be accessed without authentication.
+
+\section{Authentication}
+When accessing protected web resources, the usual varieties of authentication can be used: HTTP basic authentication (more details can be found in 1.4.1 Authentication), HTTP login-form authentication, or SSL client authentication.
+Authentication is required when accessing protected enterprise beans. The authentication mechanisms available for enterprise beans are discussed in the chapter “Security with Enterprise Beans”.
+
+\section{Login Modules}
+An application client can use the Java Authentication and Authorization Service (JAAS) to create login modules for authentication.
+To do this, write a class that implements the javax.security.auth.callback.CallbackHandler interface so that it can interact with users to enter specific authentication data, such as user names or passwords, or to display error and warning messages.
+“Applications implement the CallbackHandler interface and pass it to the login context, which forwards it directly to the underlying login modules. A login module uses the callback handler both to gather input, such as a password or smart card PIN, from users and to supply information, such as status information, to users. Because the application specifies the callback handler, an underlying login module can remain independent of the various ways applications interact with users.” [3, Java EE 6 Documentation, Using Login Modules]
+
+\section{Programmatic Login}
+Programmatic login enables the client code to supply user credentials. If you are using an EJB client, you can use the com.sun.appserv.security.ProgrammaticLogin class with its convenient login and logout methods. Programmatic login is specific to a server. If possible, login modules should be preferred. 
+
 
 \chapter{Working with Digital Certificates}
 \section{Server Authentication}
