@@ -13,10 +13,18 @@
         <servlet-name>Redirector</servlet-name>
         <servlet-class>servlet.Redirector</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ShiroView</servlet-name>
+        <servlet-class>shiro.ShiroServlet</servlet-class>
+    </servlet>
     <!--Hier werden die servlets auf bestimmte urls gebunden-->
     <servlet-mapping>
         <servlet-name>Redirector</servlet-name>
         <url-pattern>/primes</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShiroView</servlet-name>
+        <url-pattern>/shiro</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Servlet</servlet-name>
