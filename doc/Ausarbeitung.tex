@@ -6,10 +6,14 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{lmodern}
+\usepackage{courier}
 \usepackage[none]{hyphenat}
 \usepackage{authoraftertitle}
 \usepackage[final]{graphicx}
 \DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\usepackage{geometry}
+\geometry{a4paper, top=30mm, left=25mm, right=25mm, bottom=30mm,
+	headsep=10mm, footskip=12mm}
 \usepackage{color}
 \usepackage{hyperref}
 \usepackage[tikz]{bclogo}
@@ -46,7 +50,7 @@
 	tagstyle=\color{darkblue}\bf,
 	morekeywords={attribute,xmlns,version,type,release},
 	otherkeywords={attribute=, xmlns=},
-	basicstyle=\small
+	basicstyle=\ttfamily\scriptsize
 }
 
 
@@ -56,7 +60,7 @@
 
 
 
-\date{29.09.2014}
+\date{\today}
 \author{Ari Ayvazyan}
 \title{JEE Security Structure Part 1}
 
@@ -76,18 +80,20 @@
 Most web applications have a few things in common:\\
 They need to figure out who is the user that is using the application and what is he allowed to do and see.\\\\
 A typical application has more than one security layer, it may be protected by only being available from a specified network or VPN. In addition there usually is some kind of identity determination followed by a SQL user with permission to query only the required functions and data sets.\\
-On top of this, there should be output escaping to ensure that a attacker, who is able to manipulate the output for other users, is limited in the harm he is able to cause.
+On top of this, there should be output escaping to ensure that a attacker, who is able to manipulate the output for other users, is limited in the harm he is able to cause.\\
 \begin{figure}[h]
 \centering
 \includegraphics[width=1\linewidth]{res/SecurityLayers}
 \caption{Security Layers in a common JEE application}
 \label{fig:SecurityLayers}
-
 \end{figure}
-\\According to Oracle\cite{oracleDoc}, there are two ways to implement such access control functionality with Java EE:
+\newpage \noindent
+According to Oracle\cite{oracleDoc}, there are two ways to implement such access control functionality with Java EE:
 \begin{enumerate}
-	\item Programmatic
-	\item Declarative (this includes Annotations and XML-Files)
+	\item Declarative Security (this includes Annotations and XML-Files)\\
+	is applied during the application's deployment.
+	\item Programmatic Security\\
+	is applied by the application itself at runtime.
 \end{enumerate}
 While the programmatic implementation offers a wider range of customization, the declarative provides a well structured and easy to use approach.\\
 
@@ -248,7 +254,7 @@ The objective of our sample is to deny access to our service, that is reachable 
 \caption{The user tries to access a resource without authentication}
 \label{fig:Unauthorized}
 \end{figure}
-\newpage
+\newpage \noindent
 To figure out which user possesses the "view\_role" role, we first have to authenticate the user. This shall happen with a login promt. After transmitting the credentials to the server and having the correct role, the user should be able to access the resource.
 \begin{figure}[h!]
 	\centering
@@ -294,11 +300,11 @@ The rest is configured in the web.xml and glassfish-web.xml
 \begin{bclogo}[couleur=yellow!15,arrondi=0.1,logo=\bccrayon, ombre = true]{glassfish-web.xml}
 	\begin{lstlisting}[style=XML]
 	<glassfish-web-app>
-	<security-role-mapping>
-	<role-name>view_role</role-name>
-	<group-name>view_group</group-name>
-	<principal-name>Blitzmann</principal-name>
-	</security-role-mapping>
+		<security-role-mapping>
+			<role-name>view_role</role-name>
+			<group-name>view_group</group-name>
+			<principal-name>Blitzmann</principal-name>
+		</security-role-mapping>
 	</glassfish-web-app>
 	\end{lstlisting}
 \end{bclogo}
@@ -357,4 +363,6 @@ ISBN/ISSN: ISBN 9781849683166
 Shawn McKinney \& John Field, September 29, 2014\\
 San Francisco
 \end{thebibliography}
+\newpage
+\listoffigures
 \end{document}
