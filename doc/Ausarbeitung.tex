@@ -350,7 +350,7 @@ The rest is configured in the web.xml and glassfish-web.xml
 \end{bclogo}
 
 \chapter{Security with Enterprise Beans}
-Enterprise Java Beans offers many different options to secure your application. Enterprise Java Beans can fully organize both Transactions and Authorization.
+Enterprise Java Beans offers many different options to secure your application. Enterprise Java Beans can fully organize authorization and user groups.
 
 \section{Authentication and User Groups}
 Enterprise Java Beans offers role-based authentication to limit the usage of certain components. This includes whole Beans, single methods independent of their signature and methods with a definition of their signature.
@@ -359,7 +359,7 @@ Roles and permissions for Enterprise Java Beans are normally defined in the depl
 \section{Permissions}
 Method access permissions are defined as following:
 
-\subsection{<method permission>}
+\subsection{<method-permission>}
 Access definition based on roles.
 
 \subsection{<unchecked>}
@@ -417,7 +417,7 @@ Indicates that business method is not accessible to any of user specified at cla
 @DeclareRoles({"Autoren", "Lektoren"})
 public class SecuredBean implements SecuredRemote {
 	@PermitAll
-	public boolean ckeck(){ ... }
+	public boolean check(){ ... }
 	
 	@RolesAllowed("Autoren")
 	public boolean deposit(double amount) { ... }
