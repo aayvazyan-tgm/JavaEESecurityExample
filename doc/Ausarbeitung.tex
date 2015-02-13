@@ -194,7 +194,7 @@ The Web.xml file stores apart from usual deployment information like servlet map
 \end{itemize}
 The following XML snippets are located within the <web-app></web-app> tag.
 
-\subsection*{Protected Resources}
+\subsection{Protected Resources}
 It is possible to limit access to resources by defining a security constraint on the URL or by securing the resource itself.\\
 E.g. to protect the /primes/ URL with all its subdirectories we would have to use the following code:\\
 \begin{bclogo}[couleur=yellow!15,arrondi=0.1,logo=\bccrayon, ombre = true]{Securing a URL}
@@ -220,8 +220,11 @@ E.g. to protect the /primes/ URL with all its subdirectories we would have to us
 \end{lstlisting}
 \end{bclogo}
 In result, only a user with the role view\_role is allowed to access the defined resources.
-
-\subsection*{Security Roles}
+\subsubsection*{<http-method> Vulnerability}
+Only use the <http-method> tag if you know what you are doing.\\
+By doing so, you only block the defined method. The problem is, that there are more http methods than only GET and POST, e.g. HEAD.\\
+If no <http-method> is defined at all, everything will be bloced.\\
+\subsection{Security Roles}
 A Security Role was used in the last subsection "Protected Resources", we declared that only users with the role "view\_role" are allowed to view the restricted URL.\\
 A Security Role is a abstract layer in front of the container, it defines a identifier which we can use for constraints. This identifier is then used by the container to specify its meaning by telling who is part of this Security Role.\\
 \begin{bclogo}[couleur=yellow!15,arrondi=0.1,logo=\bccrayon, ombre = true]{Defining a Security Role}
@@ -232,9 +235,11 @@ A Security Role is a abstract layer in front of the container, it defines a iden
     </security-role>
 \end{lstlisting}
 \end{bclogo}
-\subsection*{Authentication Methods}
+\newpage
+\subsection{Authentication Methods}
 There are several kinds of Authentication Methods with different security behaviors.\\
-BASIC Authentication opens a login prompt when a user tries to access the secured URL, it is simple to implement but insecure. BASIC Authentication sends the user's credentials unencrypted to the server.\\
+\subsubsection*{BASIC}
+BASIC Authentication opens a login prompt when a user tries to access the secured URL, it is simple to implement but insecure. BASIC Authentication sends the user's credentials base64 encoded but unencrypted to the server.\\
 \begin{bclogo}[couleur=yellow!15,arrondi=0.1,logo=\bccrayon, ombre = true]{Defining BASIC Authentication}
 \begin{lstlisting}[style=XML]
     <login-config>
@@ -243,7 +248,15 @@ BASIC Authentication opens a login prompt when a user tries to access the secure
     </login-config>
 \end{lstlisting}
 \end{bclogo}
-
+\subsubsection*{CLIENT-CERT}
+The HTTPS Client Authentication method works with a digital certificate for identification and authentication.
+\subsubsection*{HTTPS}
+The transmitted Data is encrypted and by that security is increased.
+\subsubsection*{DIGEST}
+The DIGEST method hashes the password with a MD5 hash and transmits it with a timestamp.
+\subsubsection*{FORM}
+Form based authentication allows own forms that promt for a password. The custom form needs to transmit the parameters j\_username and j\_password with the action j\_security\_check.\\
+It uses no additional security by default.
 \section{(vendor-specific).xml}
 Most containers use in addition to the web.xml a vendor specific XML file that is usually located in the same directory with web.xml.\\
 E.g. Glassfish calls this file "glassfish-web.xml" while Tomcat has named it "context.xml".\\\\
@@ -350,7 +363,7 @@ The rest is configured in the web.xml and glassfish-web.xml
 \end{bclogo}
 
 \chapter{Security with Enterprise Beans}
-Enterprise Java Beans offers many different options to secure your application. Enterprise Java Beans can fully organize both Transactions and Authorization.
+Enterprise Java Beans offers many different options to secure your application. Enterprise Java Beans can fully organize authorization and user groups.
 
 \section{Authentication and User Groups}
 Enterprise Java Beans offers role-based authentication to limit the usage of certain components. This includes whole Beans, single methods independent of their signature and methods with a definition of their signature.
@@ -359,7 +372,7 @@ Roles and permissions for Enterprise Java Beans are normally defined in the depl
 \section{Permissions}
 Method access permissions are defined as following:
 
-\subsection{<method permission>}
+\subsection{<method-permission>}
 Access definition based on roles.
 
 \subsection{<unchecked>}
@@ -417,7 +430,7 @@ Indicates that business method is not accessible to any of user specified at cla
 @DeclareRoles({"Autoren", "Lektoren"})
 public class SecuredBean implements SecuredRemote {
 	@PermitAll
-	public boolean ckeck(){ ... }
+	public boolean check(){ ... }
 	
 	@RolesAllowed("Autoren")
 	public boolean deposit(double amount) { ... }
@@ -548,7 +561,8 @@ One tool that can be used to set up a digital certificate is keytool, a key and 
 Security vulnerabilities happen to be found in the best applications, it is important to have more layers of security that prevent attackers from reading or modifying sensitive information.\\
 E.g. we have a guestbook, everybody is allowed to write a entry. To prevent a attacker from writing custom HTML into our site, we may use input escaping. But if the attacker has managed to someway access our database in a different way, where no input escaping is applied, he would be able to perform his attack on our users.\\
 To prevent him from doing so, we have to check our output (Output Escaping). This means that we only allow data to be passed that makes sense, so we do not allow HTML elements in this case.\\
-It is important to use a framework to do so, they are proven to work, tested and can even save working hours.
+It is important to use a framework to do so, they are proven to work, tested and can even save working hours.\\
+Also, you should never print stack traces to the user, a possible attacker could use this information to find security vulnearabilities.
 
 \chapter{Frameworks}
 \section{Shiro}
