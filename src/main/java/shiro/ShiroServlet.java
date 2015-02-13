@@ -65,7 +65,6 @@ public class ShiroServlet extends HttpServlet {
                 //unexpected condition - error?
             }
         }
-        System.out.println("User [" + currentUser.getPrincipal() + "] logged in successfully.");
 
 
         //This line is Important to generate a Valid HTML Form
