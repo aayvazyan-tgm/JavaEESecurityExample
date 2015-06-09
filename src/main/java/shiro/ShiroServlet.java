@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.Random;
 
 /**
- * Servlet finds Primes using a Finder in a thread and generates the html code
+ * This servlet finds Primes using a Finder in a thread and generates the html code
  * Author: Ari Michael Ayvazyan
  * Date: 14.03.14
  */
